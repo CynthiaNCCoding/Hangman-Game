@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Hangman</title>
+
+  <!-- Bootstrap File -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="assets/css/style.css">
+
+  <!-- JQuery -->
+  <script src="https://code.jquery.com/jquery.js"></script>
+
+</head>
+<body>
+
+  <!-- Overall Bootstrap Grid -->
+  <div class="container">
+
+    <!-- Jumbotron with Title -->
+    <div class="jumbotron">
+      <h1 class="text-center"><strong>Hangman</strong></h1>
+      <h4 class="text-center">The Wedding Version</h4>
+      <div class="text-center">
+        <button class="btn btn-warning btn-xs theme-button"><span class="glyphicon glyphicon-music"></span> Set the Mood</button>
+        <button class="btn btn-default btn-xs pause-button"><span class="glyphicon glyphicon-pause"></span> Pause Song</button>
+      </div>
+
+    </div>
+    
+    <div class="row">
+
+      <!-- Left Panel -->
+      <div class="col-xs-6">
+
+        <!-- Controls (Superpower Grow/Shrink)-->
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Current Word</h3>
+          </div>
+          <div class="panel-body">
+            <div class="wordBox">
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Controls (Superpower Visibility) -->
+        <div class="panel panel-info guessBox">
+          <div class="panel-heading">
+            <h3 class="panel-title">Guesses Remaining</h3>
+          </div>
+          <div class="panel-body">
+            <div class="guessBox"></div>
+           </div>
+        </div>
+
+                <!-- Controls (Superpower Visibility) -->
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">Letters Already Guessed</h3>
+          </div>
+          <div class="panel-body">
+            <div class="lettersBox"></div>
+          </div>
+        </div>
+	    </div>
+
+
+      <div class="col-xs-2">
+        <button class="btn btn-primary btn-lg" id="start-button">Start Game</button>
+      </div>
+
+      <!-- Right Panel (Captain Planet Hero)-->
+      <div class="col-xs-2">
+
+        <div class="panel panel-info winsBox">
+          <div class="panel-heading">
+            <h3 class="panel-title">Wins</h3>
+          </div>
+          <div class="panel-body">
+            <div class=""></div>
+            </div>
+          </div> 
+        </div> <!-- panel -->
+      </div> <!-- col -->
+  </div> <!-- row -->
+
+  <script>
+
+    // JavaScript function that wraps everything
+    $(document).ready(function() {
+
+      var words = ["caterer", "band", "cocktails", "church", "vows"];
+      var currentWord = null;
+      var guessedCorrect = 0;
+      var guessesLeft = 12;
+      var lettersGuessed = [];
+      var wins = 0;
+      
+      /**
+       * check if the letter specified has already been guessed.
+       * if it has, return true, otherwise false.
+       */
+      function letterAlreadyGuessed(l) {
+        if (lettersGuessed.indexOf(l) != -1) {
+          return true;
+        } else {
+          return false;
+        }
+      }
+
+      function checkCurrentWordForLetter(letter) {
+        for (var pos = 0; pos < currentWord.length; pos++) {
+          if (currentWord[pos] == letter) {
+            return true;
+          }
+        }
+
+        return false;
+      }
+
+      /**
+       * walk through the current word letter by letter.
+       * for each position in the word where the letter
+       * supplied exists, replace the same position underscore
+       * with the actual letter.
+       */
+      function replaceUnderscores(l) {
+        for (var pos = 0; pos < currentWord.length; pos++) {
+          if (currentWord[pos] == l) {
+            $('.wordBox #letter-' + pos).html(l);
+            guessedCorrect++;
+          }
+        }
+      }
+
+      /**
+       * add the supplied letter to the list of guessed letters.
+       */
+      function addLetterToGuessList(l) {
+        lettersGuessed.push(l);
+
+        $('.lettersBox').html('');
+        for (var counter = 0; counter < lettersGuessed.length; counter++) {
+          $('.lettersBox').append('<span class="guessedLetter"> ' + lettersGuessed[counter] + ' </span>');
+        }
+      }
+
+      /**
+       * This function checks to see if all the 
+       * underscore placeholders are replaced.  If yes,
+       * return true, if no, return false.
+       */
+      function totallyGuessed() {
+        if (guessedCorrect == currentWord.length) {
+          return true;
+        } else {
+          return false;
+        }
+      } 
+
+      function winGame() {
+        alert("You win!");
+        // change picture and play happy tune
+
+        // re-enable start button
+        $('#start-button').attr('disabled', false);
+      }
+
+      function endGame() {
+        alert("YOU LOSE");
+        // play wooo woooo sound
+      }
+
+
+      $('#start-button').on("click", function() {
+        $('.lettersBox').html('');
+        lettersGuessed = [];
+        guessedCorrect = 0;
+        guessesLeft = 12;
+
+        currentWord = words[Math.floor(Math.random()*words.length)];
+        for (var counter = 0; counter <currentWord.length; counter++) {
+          $('.wordBox').append('<span class="letter" id="letter-' + counter + '">_</span>');
+        }
+
+        $(this).prop('disabled', true);
+
+        $(document).on('keyup', function(theEvent) {
+          // look if key pressed is in the current word
+          // if it is in the current word, replace the
+          // underscore in the correct location(s) with the letter.
+          // if it isn't in the current word, put it into the 
+          // guessed letters area and (maybe) show some sort of error 
+          // or X or something like that on the screen.  Maybe a beep.
+
+          // decrement the guessesLeft counter.
+
+          // finally, we need to check if we are either out of guesses, or if the word has been completely filled in.
+          // if the word is filled in, you win, add to the win count.
+          // if out of guesses, you lose.  Make the user feel shitty.
+
+          var keyPressed = theEvent.key;
+          if (letterAlreadyGuessed(keyPressed)) {
+            return;
+          }
+
+          if (checkCurrentWordForLetter(keyPressed)) {
+            replaceUnderscores(keyPressed);
+          } else {
+            addLetterToGuessList(keyPressed);
+          }
+          
+          if (totallyGuessed()) {
+            winGame();
+            return;
+          }
+
+          guessesLeft--;
+
+          if (guessesLeft == 0) {
+            endGame();
+          }
+
+        }); // keyup event handler function
+
+      });
+
+
+
+      // Gets Link for Theme Song
+      var audioElement = document.createElement("audio");
+      audioElement.setAttribute("src", "Assets/captainplanet24.mp3");
+
+      // Theme Button
+      $(".theme-button").on("click", function() {
+        audioElement.play();
+      });
+
+      $(".pause-button").on("click", function() {
+        audioElement.pause();
+      });
+
+ 
+
+      // Move Buttons (Keyboard Up)
+      $(document).keyup(function(e) {
+        switch (e.which) {
+          case 38:
+            $(".captain-planet").animate({ top: "-=200px" }, "normal");
+        }
+      });
+
+
+    });
+    
+
+  </script>
+  <style>
+
+	.jumbotron {
+    position: relative;
+    background-image: url(images/weddingRingsBannerBrideHand);
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    overflow: hidden;
+}
+
+</body>
+</html>

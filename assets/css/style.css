@@ -19,22 +19,23 @@ html .container {
     /* height: 190px; */
     /* overflow: hidden; */
     cover: initial;
-    background-size: cover;
-    margin-top: 23px;
+    /* background-size: cover; */
+    /* margin-top: 23px; */
     font-size: -34px;
     /* padding-top: 82px; */
-    background-size: 530px 215px;
+    /* background-size: 530px 215px; */
     background-repeat: no-repeat;
-    margin-left: 156px;
-    margin-bottom: 28px;
+    /* margin-left: 156px; */
+    /* margin-bottom: 28px; */
     background-color: white;
-    padding-bottom: 87px;
+    /* padding-bottom: 87px; */
+    background-position: center;
+    /* background-size: 50%; */
+    margin-top: 30px;
+    margin-bottom: 36px;
+    padding-bottom: 66px;
 }
 
 img {
-    /* height: 200px; */
-    width: 100%;
-    /* height: 50%; */
-    border: solid 1px grey;
-    border-radius: 20px;
-}
+ width: 100%;
+ 

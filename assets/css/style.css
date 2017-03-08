@@ -1,5 +1,29 @@
+/*
+html .container {
+	background: url(../images/diamondRingClipArt.png);
+	background-size: cover;
+} 
+*/
+
 .wordBox .letter {
 	font-size: 24px;
 	font-weight: bold;
 	padding: 5px 10px 5px 10px;
+}
+
+
+.jumbotron {
+    background-image: url(../images/goldRingsWithWriting.jpg);
+    /* position: relative; */
+    /* opacity: 0.45; */
+    /* height: 190px; */
+    /* overflow: hidden; */
+    cover: initial;
+    background-size: cover;
+    margin-top: 30px;
+    font-size: -34px;
+}
+
+img {
+	height: 200px;
 }
